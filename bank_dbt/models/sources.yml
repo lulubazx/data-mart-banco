@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: bank_raw
+    database: bank-data-mart-2024 # Seu Project ID
+    schema: bank_raw              # O dataset que criamos no passo anterior
+    tables:
+      - name: users
+      - name: loans
+      - name: investments
+      - name: card_transactions

@@ -1,0 +1,7 @@
+apache-airflow
+pandas
+pandas-gbq
+sqlalchemy
+psycopg2-binary
+pg8000
+dbt-bigquery

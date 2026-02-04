@@ -1,0 +1,31 @@
+# --- Segurança e Credenciais
+*.json
+credentials.json
+keyfile.json
+.env
+.env.local
+.env.production
+secrets/
+.tmp_dbt_profiles/
+.DS_Store
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+
+# --- dbt ---
+bank_dbt/dbt_packages/
+bank_dbt/target/
+bank_dbt/logs/
+
+# --- Airflow & Docker Logs ---
+logs/
+*.pid
+airflow_infra/logs/
+airflow_infra/plugins/
+
+# --- IDE ---
+.vscode/
+.idea/

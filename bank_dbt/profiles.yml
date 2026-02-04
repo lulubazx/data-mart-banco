@@ -1,0 +1,11 @@
+﻿bank_dbt:
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      project: "{{ env_var('BIGQUERY_PROJECT_ID') }}"
+      dataset: bank_mart
+      threads: 4
+      keyfile: /opt/airflow/secrets/gcp-sa.json
+      location: US
+  target: dev
