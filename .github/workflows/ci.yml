@@ -7,6 +7,8 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
@@ -22,19 +24,29 @@ jobs:
 
   dbt-compile:
     runs-on: ubuntu-latest
+    env:
+      BQ_PROJECT_ID: ${{ secrets.BQ_PROJECT_ID }}
     steps:
       - uses: actions/checkout@v4
+      - name: Skip dbt compile if BIGQUERY_PROJECT_ID is missing
+        if: ${{ env.BQ_PROJECT_ID == '' }}
+        run: |
+          echo "BIGQUERY_PROJECT_ID ausente. Ignorando dbt compile."
       - name: Set up Python
+        if: ${{ env.BQ_PROJECT_ID != '' }}
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       - name: Install dbt
+        if: ${{ env.BQ_PROJECT_ID != '' }}
         run: |
           python -m pip install --upgrade pip
           pip install dbt-bigquery
       - name: dbt deps
+        if: ${{ env.BQ_PROJECT_ID != '' }}
         run: cd bank_dbt && dbt deps
       - name: dbt compile
+        if: ${{ env.BQ_PROJECT_ID != '' }}
         run: cd bank_dbt && dbt compile
 
   dbt-test:
