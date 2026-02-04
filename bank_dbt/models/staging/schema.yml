@@ -1,0 +1,26 @@
+﻿version: 2
+
+models:
+  - name: stg_users
+    columns:
+      - name: user_id
+        tests:
+          - unique
+          - not_null
+      - name: email
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_loans
+    columns:
+      - name: loan_id
+        tests:
+          - unique
+          - not_null
+      - name: valor_emprestimo
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 1000000

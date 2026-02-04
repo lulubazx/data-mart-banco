@@ -22,6 +22,33 @@ graph TD
     H --> E
 ```
 
+### Diagrama Detalhado (Segurança e Camadas)
+
+```mermaid
+graph LR
+  subgraph Origem
+    PG[(PostgreSQL)]
+  end
+  subgraph Ingestao
+    ING[Ingestion Service]
+    LOGS[(Logs/Metrics)]
+  end
+  subgraph BigQuery
+    RAW[bank_raw]
+    STG[bank_raw_staging]
+    MART[bank_mart]
+    META[bank_meta]
+  end
+  subgraph Consumo
+    API[Ruby API]
+  end
+  PG --> ING --> STG --> RAW
+  RAW --> MART
+  ING --> LOGS
+  ING --> META
+  MART --> API
+```
+
 ---
 
 ## Tech Stack
@@ -31,7 +58,7 @@ graph TD
 * Data Warehouse: Google BigQuery
 * Transformação: dbt (Data Build Tool)
 * Orquestração: Apache Airflow (Docker)
-* Consumo: Ruby (simulacao de backend API)
+* Consumo: Ruby (simulação de backend API)
 * Infraestrutura: Docker e Docker Compose
 
 ---
@@ -41,11 +68,11 @@ graph TD
 1. Ingestão (Extract & Load)
 
    * Scripts em Python extraem dados de clientes, transações e empréstimos do PostgreSQL.
-   * Os dados brutos sao carregados no BigQuery na camada `bank_raw`.
+   * Os dados brutos são carregados no BigQuery na camada `bank_raw`.
 
 2. Transformação (Transform)
 
-   * O dbt é responsavel pela modelagem analítica:
+   * O dbt é responsável pela modelagem analítica:
 
      * Staging: limpeza, padronização e tipagem dos dados.
      * Marts: construção de fatos e dimensões utilizando Star Schema.
@@ -80,6 +107,7 @@ graph TD
 3. Adicione a credencial de Service Account do GCP em `secrets/gcp-sa.json` (somente para uso local).
 4. Configure o SDK do Google Cloud localmente ou use `GOOGLE_APPLICATION_CREDENTIALS` via `.env`.
 5. Gere `AIRFLOW_FERNET_KEY` (ex.: `python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"`).
+6. Ajuste `config/tables.yaml` e `config/schemas.yaml` conforme seu esquema real.
 
 ---
 
@@ -124,14 +152,24 @@ docker run --env-file ..\.env -v ${PWD}/..\secrets:/app/secrets:ro banco-ruby-ap
 
 ## Resultados
 
-O pipeline gera a tabela analítica `kpi_performance_geral`, permitindo segmentacao de clientes e analise financeira em tempo quase real.
+O pipeline gera a tabela analítica `kpi_performance_geral`, permitindo segmentação de clientes e análise financeira em tempo quase real.
 
 Exemplo de resposta da API Ruby:
 
 ```json
 { "nome": "Maria S.", "saldo": 15000.0, "categoria": "Varejo" }
-{ "nome": "Joao S.", "saldo": -3500.0, "categoria": "Varejo" }
+{ "nome": "João S.", "saldo": -3500.0, "categoria": "Varejo" }
 ```
+
+---
+
+## Decisões Técnicas
+
+- Ingestão com staging + MERGE no BigQuery para idempotência.
+- Configurações em YAML para tabelas, colunas de data e validações.
+- Observabilidade via logs estruturados e métricas em `bank_meta`.
+- Qualidade de dados com testes dbt e testes SQL custom.
+- Segredos: suporte a Airflow Connections via `POSTGRES_CONN_ID`.
 
 ---
 
@@ -148,6 +186,33 @@ Aplicação Ruby a consumir dados tratados do BigQuery via Google Client Library
 ### BigQuery Preview
 Data Mart final no BigQuery pronto para consumo analítico
 ![BigQuery View](docs/bigquery.PNG)
+
+---
+
+## Runbook (Troubleshooting)
+
+- Airflow Webserver não abre: verifique `AIRFLOW__WEBSERVER__WEB_SERVER_MASTER_TIMEOUT` e os logs do container.
+- Erros de ingestão no Airflow: valide conexão Postgres e variáveis `POSTGRES_*`.
+- dbt falha por credenciais: confirme `BIGQUERY_PROJECT_ID` e o tipo de credencial (service account em produção).
+- dbt_utils: rode `dbt deps` antes de `dbt test`.
+- BigQuery sem billing: MERGE será substituído por CREATE OR REPLACE automaticamente.
+
+---
+
+## Data Dictionary (Resumo)
+
+- `stg_users`: clientes (user_id, nome_completo, email, data_cadastro)
+- `stg_loans`: empréstimos (loan_id, user_id, valor_emprestimo, status, taxa_juros, data_solicitacao)
+- `stg_investments`: investimentos (investment_id, user_id, tipo_investimento, valor_investido, data_investimento)
+- `stg_cards`: transações de cartão (transaction_id, user_id, valor_transacao, categoria, data_transacao)
+
+---
+
+## Data Lineage
+
+- Gere a documentação: `dbt docs generate`
+- Sirva localmente: `dbt docs serve`
+- Integração recomendada: DataHub ou Amundsen (catálogo e lineage).
 
 ---
 

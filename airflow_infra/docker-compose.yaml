@@ -14,9 +14,15 @@ x-airflow-common: &airflow-common
     - AIRFLOW__WEBSERVER__WEB_SERVER_MASTER_TIMEOUT=300
     - AIRFLOW__WEBSERVER__WORKERS=2
     - AIRFLOW__WEBSERVER__WORKER_CLASS=sync
+    - PYTHONPATH=/opt/airflow/dags
     - GOOGLE_APPLICATION_CREDENTIALS=/opt/airflow/secrets/gcp-sa.json
     - BIGQUERY_PROJECT_ID=${BIGQUERY_PROJECT_ID:?set in .env}
     - BIGQUERY_DATASET_ID=${BIGQUERY_DATASET_ID:-bank_raw}
+    - BIGQUERY_STAGING_DATASET_ID=${BIGQUERY_STAGING_DATASET_ID:-bank_raw_staging}
+    - BIGQUERY_META_DATASET_ID=${BIGQUERY_META_DATASET_ID:-bank_meta}
+    - GOOGLE_CLOUD_PROJECT=${BIGQUERY_PROJECT_ID:?set in .env}
+    - INGESTION_CONFIG_PATH=/opt/airflow/dags/config/tables.yaml
+    - INGESTION_SCHEMAS_PATH=/opt/airflow/dags/config/schemas.yaml
     - POSTGRES_USER=${POSTGRES_USER:?set in .env}
     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?set in .env}
     - POSTGRES_DB=${POSTGRES_DB:?set in .env}

@@ -1,0 +1,62 @@
+﻿name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pyyaml pandas sqlalchemy
+      - name: Run tests
+        run: pytest tests/
+
+  dbt-compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dbt
+        run: |
+          python -m pip install --upgrade pip
+          pip install dbt-bigquery
+      - name: dbt deps
+        run: cd bank_dbt && dbt deps
+      - name: dbt compile
+        run: cd bank_dbt && dbt compile
+
+  dbt-test:
+    runs-on: ubuntu-latest
+    if: ${{ secrets.BQ_KEYFILE != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dbt
+        run: |
+          python -m pip install --upgrade pip
+          pip install dbt-bigquery
+      - name: Write keyfile
+        run: |
+          echo "${{ secrets.BQ_KEYFILE }}" > /tmp/bq_key.json
+      - name: dbt deps
+        run: cd bank_dbt && dbt deps
+      - name: dbt test (staging)
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/bq_key.json
+          BIGQUERY_PROJECT_ID: ${{ secrets.BQ_PROJECT_ID }}
+        run: cd bank_dbt && dbt test --select staging

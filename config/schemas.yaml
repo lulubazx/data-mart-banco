@@ -1,0 +1,8 @@
+﻿users:
+  required_columns: [id, name, email, created_at]
+loans:
+  required_columns: [id, user_id, amount, status, interest_rate, created_at]
+investments:
+  required_columns: [id, user_id, type, amount, date_invested]
+card_transactions:
+  required_columns: [id, user_id, amount, category, transaction_date]

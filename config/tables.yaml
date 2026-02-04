@@ -1,0 +1,31 @@
+﻿tables:
+  - name: users
+    primary_key: id
+    date_columns: [created_at]
+    incremental: true
+    timestamp_column: created_at
+    rowcount_warning_pct: 30
+    merge_strategy: merge
+  - name: loans
+    primary_key: id
+    date_columns: [created_at]
+    incremental: true
+    timestamp_column: created_at
+    business_rules:
+      - status IN ('active', 'paid', 'defaulted')
+    rowcount_warning_pct: 30
+    merge_strategy: merge
+  - name: investments
+    primary_key: id
+    date_columns: [date_invested]
+    incremental: true
+    timestamp_column: date_invested
+    rowcount_warning_pct: 30
+    merge_strategy: merge
+  - name: card_transactions
+    primary_key: id
+    date_columns: [transaction_date]
+    incremental: true
+    timestamp_column: transaction_date
+    rowcount_warning_pct: 30
+    merge_strategy: merge
