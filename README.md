@@ -139,15 +139,15 @@ Exemplo de resposta da API Ruby:
 
 ### Pipeline Executado com Sucesso
 Fluxo de orquestração completo no Airflow: da ingestão PostgreSQL à modelagem dbt
-![Airflow Graph](docs/img/airflow_success.png)
+![Airflow Graph](docs/airflow_success.PNG)
 
 ### Saída da API
 Aplicação Ruby a consumir dados tratados do BigQuery via Google Client Library
-![Ruby Output](docs/img/ruby_terminal.png)
+![Ruby Output](docs/ruby_terminal.PNG)
 
 ### BigQuery Preview
 Data Mart final no BigQuery pronto para consumo analítico
-![BigQuery View](docs/img/bigquery.png)
+![BigQuery View](docs/bigquery.PNG)
 
 ---
 
